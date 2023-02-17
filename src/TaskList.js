@@ -6,6 +6,8 @@ import Edit from './icons/edit-outline.svg';
 import UpdateModal from './common/UpdateModal';
 import TaskInput from './common/TaskInput';
 import {COLORS} from './common/Colors';
+import Geolocation from '@react-native-community/geolocation';
+
 
 class TaskList extends Component {
   constructor(props) {
@@ -17,6 +19,19 @@ class TaskList extends Component {
       modalText: '',
       modalSubmit: () => {},
     };
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    );
   }
 
   render() {
@@ -85,6 +100,8 @@ class TaskList extends Component {
                   })
                 }>
                 <Edit width={30} height={30} fill={COLORS.DARK_BLUE} />
+                <Text>Latitude: {this.state.latitude}</Text>
+      <Text>Longitude: {this.state.longitude}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -115,7 +132,7 @@ class TaskList extends Component {
       </View>
     ) : (
       <View style={[styles.noTasksContainer]}>
-        <Text style={[styles.noTasks]}>You have no tasks!</Text>
+        <Text style={[styles.noTasks]}>You have cleared your tasks!</Text>
         <Award width={30} height={30} fill={COLORS.RED} />
       </View>
     );
